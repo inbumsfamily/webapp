@@ -389,4 +389,14 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   }
+  
+  // Set up mobile menu toggle
+  const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+  const mobileNav = document.getElementById('mobileNav');
+  
+  if (mobileMenuBtn && mobileNav) {
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileNav.classList.toggle('hidden');
+    });
+  }
 });

@@ -8,6 +8,7 @@ import articlesRouter from './routes/articles';
 import categoriesRouter from './routes/categories';
 import commentsRouter from './routes/comments';
 import calendarRouter from './routes/calendar';
+import pagesRouter from './routes/pages';
 import type { CloudflareBindings } from './types';
 
 const app = new Hono<{ Bindings: CloudflareBindings }>();
@@ -26,6 +27,9 @@ app.route('/api/articles', articlesRouter);
 app.route('/api/categories', categoriesRouter);
 app.route('/api/comments', commentsRouter);
 app.route('/api/calendar', calendarRouter);
+
+// Page Routes
+app.route('/', pagesRouter);
 
 // Health check
 app.get('/api/health', (c) => {
@@ -52,18 +56,141 @@ app.get('/', (c) => {
                 <div class="container mx-auto px-4">
                     <div class="flex justify-between items-center h-20">
                         <div class="flex items-center">
-                            <h1 class="text-2xl font-bold text-blue-900">
+                            <a href="/" class="text-2xl font-bold text-blue-900">
                                 <i class="fas fa-newspaper mr-2"></i>
                                 제주한라대 신문방송사
-                            </h1>
+                            </a>
                         </div>
-                        <nav class="hidden md:flex space-x-6">
-                            <a href="#broadcast" class="text-gray-700 hover:text-blue-600 font-medium">방송국</a>
-                            <a href="#newspaper" class="text-gray-700 hover:text-blue-600 font-medium">신문사</a>
-                            <a href="#special" class="text-gray-700 hover:text-blue-600 font-medium">기획보도</a>
-                            <a href="#shorts" class="text-gray-700 hover:text-blue-600 font-medium">쇼츠</a>
-                            <a href="#campus" class="text-gray-700 hover:text-blue-600 font-medium">캠퍼스</a>
+                        
+                        <!-- Main Navigation with Dropdown -->
+                        <nav class="hidden lg:flex items-center space-x-1">
+                            <a href="/" class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium">홈</a>
+                            
+                            <!-- 방송국 드롭다운 -->
+                            <div class="relative group">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                    방송국
+                                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                </button>
+                                <div class="absolute top-full left-0 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1">
+                                    <a href="/broadcast/intro" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">방송국소개</a>
+                                    <a href="/broadcast/halla-news" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">한라뉴스</a>
+                                    <a href="/broadcast/halla-interview" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">한라인터뷰</a>
+                                    <a href="/broadcast/major-special" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">전공특집</a>
+                                    <a href="/broadcast/campus-tour" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">캠퍼스투어</a>
+                                    <a href="/broadcast/culture-art" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">문화·예술(방송)</a>
+                                    <a href="/broadcast/radio-podcast" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">라디오·팟캐스트</a>
+                                    <a href="/broadcast/activities" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">방송국 활동기</a>
+                                </div>
+                            </div>
+                            
+                            <!-- 신문사 드롭다운 -->
+                            <div class="relative group">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                    신문사
+                                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                </button>
+                                <div class="absolute top-full left-0 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1">
+                                    <a href="/newspaper/intro" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">신문사소개</a>
+                                    <a href="/newspaper/field-coverage" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">현장취재</a>
+                                    <a href="/newspaper/campus-report" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">캠퍼스 리포트</a>
+                                    <a href="/newspaper/activities" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">신문사 활동기</a>
+                                </div>
+                            </div>
+                            
+                            <!-- 캠퍼스 드롭다운 -->
+                            <div class="relative group">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                    캠퍼스
+                                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                </button>
+                                <div class="absolute top-full left-0 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1">
+                                    <a href="/campus/university-news" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">대학소식</a>
+                                    <a href="/campus/our-major-now" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">지우전(지금 우리 전공은)</a>
+                                    <a href="/campus/clubs" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">동아리</a>
+                                    <a href="/campus/student-activities" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">학생활동</a>
+                                    <a href="/campus/campus-life" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">캠퍼스 라이프</a>
+                                    <a href="/campus/scholarship-welfare" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">장학·복지·지원</a>
+                                    <a href="/campus/x-file" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">X-파일</a>
+                                    <a href="/campus/alumni-interview" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">졸업생 인터뷰</a>
+                                </div>
+                            </div>
+                            
+                            <!-- 쇼츠 드롭다운 -->
+                            <div class="relative group">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                    쇼츠
+                                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                </button>
+                                <div class="absolute top-full left-0 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1">
+                                    <a href="/shorts/one-cut-news" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">한컷 뉴스</a>
+                                    <a href="/shorts/issue-briefing" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">이슈 브리핑</a>
+                                    <a href="/shorts/anonymous-news" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">익명소식</a>
+                                    <a href="/shorts/student-tips" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">재학생 꿀팁</a>
+                                </div>
+                            </div>
+                            
+                            <!-- 기획보도 드롭다운 -->
+                            <div class="relative group">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                    기획보도
+                                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                </button>
+                                <div class="absolute top-full left-0 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1">
+                                    <a href="/special-report/career-employment" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">진로·취업</a>
+                                    <a href="/special-report/youth-region" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">청년·지역</a>
+                                    <a href="/special-report/welfare-rights" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">복지·권익</a>
+                                    <a href="/special-report/academic-research" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">학술·연구</a>
+                                </div>
+                            </div>
+                            
+                            <!-- 제주소식 드롭다운 -->
+                            <div class="relative group">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                    제주소식
+                                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                </button>
+                                <div class="absolute top-full left-0 w-48 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1">
+                                    <a href="/jeju-news/jeju-issue" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">제주이슈</a>
+                                    <a href="/jeju-news/culture-exploration" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">문화탐방</a>
+                                    <a href="/jeju-news/environment-nature" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">환경과 자연</a>
+                                    <a href="/jeju-news/youth-startup" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">청년 창업</a>
+                                    <a href="/jeju-news/traditional-village" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">제주전통마을</a>
+                                </div>
+                            </div>
+                            
+                            <!-- 오피니언 드롭다운 -->
+                            <div class="relative group">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                    오피니언
+                                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                </button>
+                                <div class="absolute top-full left-0 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1">
+                                    <a href="/opinion/editorial-column" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">사설·칼럼</a>
+                                    <a href="/opinion/professor-column" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">교수 칼럼</a>
+                                    <a href="/opinion/reader-opinion" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">독자 의견·제안</a>
+                                    <a href="/opinion/anonymous-voice" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">익명 목소리</a>
+                                    <a href="/opinion/book-movie" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">함께 읽는 책·영화 추천</a>
+                                </div>
+                            </div>
+                            
+                            <!-- 에세이 드롭다운 -->
+                            <div class="relative group">
+                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                    에세이
+                                    <i class="fas fa-chevron-down ml-1 text-xs"></i>
+                                </button>
+                                <div class="absolute top-full left-0 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 mt-1">
+                                    <a href="/essay/time-in-jeju" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">제주에서 보내는 시간</a>
+                                    <a href="/essay/dreams-hopes" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">꿈과 희망</a>
+                                    <a href="/essay/travel-exploration" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">여행과 탐방</a>
+                                    <a href="/essay/literature-art" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">문학과 예술</a>
+                                    <a href="/essay/monthly-theme" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">이달의 테마 에세이</a>
+                                    <a href="/essay/my-thoughts" class="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600">나만의 생각 정리</a>
+                                </div>
+                            </div>
                         </nav>
+                        
                         <div class="flex items-center space-x-4">
                             <button id="searchBtn" class="text-gray-700 hover:text-blue-600">
                                 <i class="fas fa-search"></i>
@@ -74,7 +201,27 @@ app.get('/', (c) => {
                             <button id="adminBtn" class="hidden text-gray-700 hover:text-blue-600">
                                 <i class="fas fa-cog"></i> 관리자
                             </button>
+                            
+                            <!-- Mobile menu button -->
+                            <button id="mobileMenuBtn" class="lg:hidden text-gray-700 hover:text-blue-600">
+                                <i class="fas fa-bars"></i>
+                            </button>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Navigation -->
+                <div id="mobileNav" class="hidden lg:hidden bg-white border-t">
+                    <div class="container mx-auto px-4 py-4">
+                        <a href="/" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">홈</a>
+                        <a href="/broadcast" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">방송국</a>
+                        <a href="/newspaper" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">신문사</a>
+                        <a href="/campus" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">캠퍼스</a>
+                        <a href="/shorts" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">쇼츠</a>
+                        <a href="/special-report" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">기획보도</a>
+                        <a href="/jeju-news" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">제주소식</a>
+                        <a href="/opinion" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">오피니언</a>
+                        <a href="/essay" class="block py-2 text-gray-700 hover:text-blue-600 font-medium">에세이</a>
                     </div>
                 </div>
             </header>
