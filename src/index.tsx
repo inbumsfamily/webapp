@@ -48,7 +48,7 @@ app.get('/', (c) => {
     <body class="bg-gray-50">
         <div id="app">
             <!-- Header -->
-            <header class="bg-white shadow-sm border-b">
+            <header class="bg-white shadow-sm border-b sticky top-0 z-50">
                 <div class="container mx-auto px-4">
                     <div class="flex justify-between items-center h-20">
                         <div class="flex items-center">
@@ -58,60 +58,347 @@ app.get('/', (c) => {
                             </h1>
                         </div>
                         <nav class="hidden md:flex space-x-6">
-                            <a href="#" class="text-gray-700 hover:text-blue-600">방송국</a>
-                            <a href="#" class="text-gray-700 hover:text-blue-600">신문사</a>
-                            <a href="#" class="text-gray-700 hover:text-blue-600">기획보도</a>
-                            <a href="#" class="text-gray-700 hover:text-blue-600">쇼츠</a>
-                            <a href="#" class="text-gray-700 hover:text-blue-600">캠퍼스</a>
+                            <a href="#broadcast" class="text-gray-700 hover:text-blue-600 font-medium">방송국</a>
+                            <a href="#newspaper" class="text-gray-700 hover:text-blue-600 font-medium">신문사</a>
+                            <a href="#special" class="text-gray-700 hover:text-blue-600 font-medium">기획보도</a>
+                            <a href="#shorts" class="text-gray-700 hover:text-blue-600 font-medium">쇼츠</a>
+                            <a href="#campus" class="text-gray-700 hover:text-blue-600 font-medium">캠퍼스</a>
                         </nav>
                         <div class="flex items-center space-x-4">
+                            <button id="searchBtn" class="text-gray-700 hover:text-blue-600">
+                                <i class="fas fa-search"></i>
+                            </button>
                             <button id="loginBtn" class="text-gray-700 hover:text-blue-600">
                                 <i class="fas fa-user"></i> 로그인
+                            </button>
+                            <button id="adminBtn" class="hidden text-gray-700 hover:text-blue-600">
+                                <i class="fas fa-cog"></i> 관리자
                             </button>
                         </div>
                     </div>
                 </div>
             </header>
 
-            <!-- Hero Section -->
-            <section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-20">
-                <div class="container mx-auto px-4 text-center">
-                    <h2 class="text-4xl font-bold mb-4">제주한라대학교의 목소리</h2>
-                    <p class="text-xl mb-8">캠퍼스의 생생한 소식을 전합니다</p>
-                    <div class="flex justify-center space-x-4">
-                        <button class="bg-white text-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">
-                            최신 뉴스 보기
-                        </button>
-                        <button class="border-2 border-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-900">
-                            방송 다시보기
-                        </button>
+            <!-- Hero Section with Main Video -->
+            <section class="bg-gradient-to-r from-blue-900 to-blue-700 text-white py-16">
+                <div class="container mx-auto px-4">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div>
+                            <h2 class="text-4xl font-bold mb-4">제주한라대학교의 목소리</h2>
+                            <p class="text-xl mb-6">캠퍼스의 생생한 소식을 전합니다</p>
+                            <div class="flex space-x-4">
+                                <button onclick="scrollToSection('newspaper')" class="bg-white text-blue-900 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100">
+                                    최신 뉴스 보기
+                                </button>
+                                <button onclick="scrollToSection('broadcast')" class="border-2 border-white px-6 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-900">
+                                    방송 다시보기
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <!-- 메인 비디오 플레이어 -->
+                            <div class="bg-black rounded-lg overflow-hidden aspect-video">
+                                <div id="mainVideo" class="w-full h-full flex items-center justify-center text-white">
+                                    <i class="fas fa-play-circle text-6xl opacity-75"></i>
+                                </div>
+                            </div>
+                            <p class="text-sm mt-2">최신 방송: 2025학년도 신입생 환영 특집</p>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- Main Content -->
             <main class="container mx-auto px-4 py-12">
-                <!-- Latest Articles -->
-                <section class="mb-12">
-                    <h3 class="text-2xl font-bold mb-6">최신 기사</h3>
-                    <div id="articlesGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Articles will be loaded here -->
-                        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-                            <div class="h-48 bg-gray-200 animate-pulse"></div>
+                <!-- 방송국 섹션 -->
+                <section id="broadcast" class="mb-16">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <i class="fas fa-video mr-2 text-red-600"></i>
+                            방송국
+                        </h3>
+                        <a href="#" class="text-blue-600 hover:underline">더보기 →</a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- 방송 콘텐츠 카드 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                            <div class="aspect-video bg-gray-300 relative">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white text-4xl"></i>
+                                </div>
+                                <span class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 text-sm rounded">
+                                    12:34
+                                </span>
+                            </div>
                             <div class="p-4">
-                                <div class="h-4 bg-gray-200 rounded animate-pulse mb-2"></div>
-                                <div class="h-4 bg-gray-200 rounded animate-pulse w-3/4"></div>
+                                <h4 class="font-bold mb-2">2025 신입생 오리엔테이션 현장</h4>
+                                <p class="text-gray-600 text-sm mb-2">새로운 시작을 준비하는 신입생들의 열정적인 모습을 담았습니다.</p>
+                                <div class="flex justify-between items-center text-sm text-gray-500">
+                                    <span><i class="fas fa-eye mr-1"></i> 1,234</span>
+                                    <span>2025-08-19</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                            <div class="aspect-video bg-gray-300 relative">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white text-4xl"></i>
+                                </div>
+                                <span class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 text-sm rounded">
+                                    8:21
+                                </span>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold mb-2">캠퍼스 리포트: 도서관 리모델링</h4>
+                                <p class="text-gray-600 text-sm mb-2">새롭게 단장한 중앙도서관의 변화된 모습을 소개합니다.</p>
+                                <div class="flex justify-between items-center text-sm text-gray-500">
+                                    <span><i class="fas fa-eye mr-1"></i> 892</span>
+                                    <span>2025-08-18</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                            <div class="aspect-video bg-gray-300 relative">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white text-4xl"></i>
+                                </div>
+                                <span class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 text-sm rounded">
+                                    15:42
+                                </span>
+                            </div>
+                            <div class="p-4">
+                                <h4 class="font-bold mb-2">인터뷰: 취업 성공 선배들의 조언</h4>
+                                <p class="text-gray-600 text-sm mb-2">대기업 취업에 성공한 졸업생들의 생생한 경험담</p>
+                                <div class="flex justify-between items-center text-sm text-gray-500">
+                                    <span><i class="fas fa-eye mr-1"></i> 2,156</span>
+                                    <span>2025-08-17</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </section>
 
-                <!-- Academic Calendar -->
-                <section class="mb-12">
-                    <h3 class="text-2xl font-bold mb-6">학사일정</h3>
-                    <div id="calendarContainer" class="bg-white rounded-lg shadow-md p-6">
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <!-- Calendar events will be loaded here -->
+                <!-- 신문사 섹션 -->
+                <section id="newspaper" class="mb-16">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <i class="fas fa-newspaper mr-2 text-blue-600"></i>
+                            신문사
+                        </h3>
+                        <a href="#" class="text-blue-600 hover:underline">더보기 →</a>
+                    </div>
+                    <div id="newspaperArticles" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- 신문 기사가 여기에 로드됩니다 -->
+                    </div>
+                </section>
+
+                <!-- 기획보도 섹션 -->
+                <section id="special" class="mb-16">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <i class="fas fa-star mr-2 text-yellow-500"></i>
+                            기획보도
+                        </h3>
+                        <a href="#" class="text-blue-600 hover:underline">더보기 →</a>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- 기획보도 대형 카드 -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                            <div class="h-64 bg-gradient-to-br from-purple-600 to-blue-600 flex items-center justify-center">
+                                <div class="text-white text-center">
+                                    <i class="fas fa-chart-line text-6xl mb-4"></i>
+                                    <h4 class="text-2xl font-bold">2025 대학생 취업 현황 분석</h4>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-4">제주한라대학교 졸업생들의 취업 현황과 주요 취업처를 심층 분석했습니다. IT, 관광, 의료 분야에서의 성과와 전망을 다룹니다.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">
+                                        <i class="fas fa-user mr-1"></i> 편집부
+                                    </span>
+                                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                        자세히 보기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+                            <div class="h-64 bg-gradient-to-br from-green-600 to-teal-600 flex items-center justify-center">
+                                <div class="text-white text-center">
+                                    <i class="fas fa-seedling text-6xl mb-4"></i>
+                                    <h4 class="text-2xl font-bold">캠퍼스 친환경 프로젝트</h4>
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <p class="text-gray-600 mb-4">탄소중립 캠퍼스를 향한 제주한라대학교의 도전. 태양광 발전, 전기차 충전소, 그린 캠퍼스 조성 사업을 취재했습니다.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">
+                                        <i class="fas fa-user mr-1"></i> 환경부
+                                    </span>
+                                    <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                        자세히 보기
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 쇼츠 섹션 -->
+                <section id="shorts" class="mb-16">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <i class="fas fa-bolt mr-2 text-yellow-400"></i>
+                            쇼츠
+                        </h3>
+                        <a href="#" class="text-blue-600 hover:underline">더보기 →</a>
+                    </div>
+                    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        <!-- 쇼츠 비디오 카드 (세로형) -->
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
+                            <div class="aspect-[9/16] bg-gradient-to-b from-pink-400 to-purple-600 relative">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white text-3xl"></i>
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
+                                    <p class="text-white font-bold text-sm">캠퍼스 1분 투어</p>
+                                    <p class="text-white text-xs opacity-75">조회수 5.2K</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
+                            <div class="aspect-[9/16] bg-gradient-to-b from-blue-400 to-indigo-600 relative">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white text-3xl"></i>
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
+                                    <p class="text-white font-bold text-sm">학식 리뷰</p>
+                                    <p class="text-white text-xs opacity-75">조회수 3.8K</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
+                            <div class="aspect-[9/16] bg-gradient-to-b from-orange-400 to-red-600 relative">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white text-3xl"></i>
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
+                                    <p class="text-white font-bold text-sm">동아리 소개</p>
+                                    <p class="text-white text-xs opacity-75">조회수 2.9K</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
+                            <div class="aspect-[9/16] bg-gradient-to-b from-green-400 to-teal-600 relative">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white text-3xl"></i>
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
+                                    <p class="text-white font-bold text-sm">교수님 인터뷰</p>
+                                    <p class="text-white text-xs opacity-75">조회수 4.1K</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
+                            <div class="aspect-[9/16] bg-gradient-to-b from-purple-400 to-pink-600 relative">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white text-3xl"></i>
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
+                                    <p class="text-white font-bold text-sm">축제 하이라이트</p>
+                                    <p class="text-white text-xs opacity-75">조회수 7.3K</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow cursor-pointer">
+                            <div class="aspect-[9/16] bg-gradient-to-b from-yellow-400 to-orange-600 relative">
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <i class="fas fa-play-circle text-white text-3xl"></i>
+                                </div>
+                                <div class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black to-transparent">
+                                    <p class="text-white font-bold text-sm">시험기간 꿀팁</p>
+                                    <p class="text-white text-xs opacity-75">조회수 6.5K</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 캠퍼스 라이프 섹션 -->
+                <section id="campus" class="mb-16">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="text-3xl font-bold text-gray-800">
+                            <i class="fas fa-graduation-cap mr-2 text-green-600"></i>
+                            캠퍼스 라이프
+                        </h3>
+                        <a href="#" class="text-blue-600 hover:underline">더보기 →</a>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-calendar-alt text-blue-600 text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">학사일정</h4>
+                                    <p class="text-sm text-gray-600">이번 달 주요 일정</p>
+                                </div>
+                            </div>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex justify-between">
+                                    <span>중간고사</span>
+                                    <span class="text-gray-500">10.15 - 10.21</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>수강신청 정정</span>
+                                    <span class="text-gray-500">09.05 - 09.07</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>축제</span>
+                                    <span class="text-gray-500">10.25 - 10.27</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-green-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-users text-green-600 text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">동아리 소식</h4>
+                                    <p class="text-sm text-gray-600">신규 모집 중</p>
+                                </div>
+                            </div>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-center">
+                                    <span class="bg-red-500 text-white px-2 py-1 rounded text-xs mr-2">모집중</span>
+                                    <span>봉사동아리 '나눔'</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="bg-red-500 text-white px-2 py-1 rounded text-xs mr-2">모집중</span>
+                                    <span>프로그래밍 동아리</span>
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="bg-gray-500 text-white px-2 py-1 rounded text-xs mr-2">마감</span>
+                                    <span>댄스 동아리</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow">
+                            <div class="flex items-center mb-4">
+                                <div class="bg-yellow-100 p-3 rounded-full mr-4">
+                                    <i class="fas fa-trophy text-yellow-600 text-2xl"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold">수상 소식</h4>
+                                    <p class="text-sm text-gray-600">우리 대학 성과</p>
+                                </div>
+                            </div>
+                            <ul class="space-y-2 text-sm">
+                                <li>• 전국 대학생 프로그래밍 대회 대상</li>
+                                <li>• 창업 아이디어 경진대회 우수상</li>
+                                <li>• 봉사활동 우수대학 선정</li>
+                            </ul>
                         </div>
                     </div>
                 </section>
@@ -174,56 +461,222 @@ app.get('/admin', (c) => {
         <title>관리자 대시보드 - 제주한라대학교 신문방송사</title>
         <script src="https://cdn.tailwindcss.com"></script>
         <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
     <body class="bg-gray-100">
         <div id="adminApp" class="min-h-screen">
-            <!-- Admin dashboard will be loaded here -->
             <div class="flex h-screen">
                 <!-- Sidebar -->
-                <div class="w-64 bg-gray-800 text-white">
-                    <div class="p-4">
-                        <h1 class="text-xl font-bold">관리자 대시보드</h1>
+                <div class="w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white">
+                    <div class="p-4 border-b border-gray-700">
+                        <h1 class="text-xl font-bold flex items-center">
+                            <i class="fas fa-shield-alt mr-2 text-yellow-400"></i>
+                            관리자 패널
+                        </h1>
+                        <p class="text-xs text-gray-400 mt-1">제주한라대 신문방송사</p>
                     </div>
-                    <nav class="mt-8">
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">
-                            <i class="fas fa-tachometer-alt mr-2"></i> 대시보드
+                    <nav class="mt-4">
+                        <a href="#dashboard" onclick="showSection('dashboard')" class="block px-4 py-3 hover:bg-gray-700 bg-gray-700 transition-colors">
+                            <i class="fas fa-tachometer-alt mr-3 w-5"></i> 대시보드
                         </a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">
-                            <i class="fas fa-newspaper mr-2"></i> 기사 관리
+                        <a href="#articles" onclick="showSection('articles')" class="block px-4 py-3 hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-newspaper mr-3 w-5"></i> 기사 관리
                         </a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">
-                            <i class="fas fa-users mr-2"></i> 사용자 관리
+                        <a href="#broadcast" onclick="showSection('broadcast')" class="block px-4 py-3 hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-video mr-3 w-5"></i> 방송 콘텐츠
                         </a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">
-                            <i class="fas fa-calendar mr-2"></i> 학사일정
+                        <a href="#shorts" onclick="showSection('shorts')" class="block px-4 py-3 hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-bolt mr-3 w-5"></i> 쇼츠 관리
                         </a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-700">
-                            <i class="fas fa-cog mr-2"></i> 설정
+                        <a href="#users" onclick="showSection('users')" class="block px-4 py-3 hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-users mr-3 w-5"></i> 사용자 관리
+                        </a>
+                        <a href="#calendar" onclick="showSection('calendar')" class="block px-4 py-3 hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-calendar-alt mr-3 w-5"></i> 학사일정
+                        </a>
+                        <a href="#comments" onclick="showSection('comments')" class="block px-4 py-3 hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-comments mr-3 w-5"></i> 댓글 관리
+                        </a>
+                        <a href="#settings" onclick="showSection('settings')" class="block px-4 py-3 hover:bg-gray-700 transition-colors">
+                            <i class="fas fa-cog mr-3 w-5"></i> 사이트 설정
                         </a>
                     </nav>
+                    <div class="absolute bottom-0 w-64 p-4 border-t border-gray-700">
+                        <button onclick="window.location.href='/'" class="w-full bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded text-sm">
+                            <i class="fas fa-home mr-2"></i> 메인 페이지로
+                        </button>
+                    </div>
                 </div>
                 
                 <!-- Main Content -->
-                <div class="flex-1 p-8">
-                    <h2 class="text-2xl font-bold mb-6">대시보드</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h3 class="text-gray-500 text-sm">전체 기사</h3>
-                            <p class="text-3xl font-bold">0</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h3 class="text-gray-500 text-sm">회원 수</h3>
-                            <p class="text-3xl font-bold">0</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h3 class="text-gray-500 text-sm">오늘 방문자</h3>
-                            <p class="text-3xl font-bold">0</p>
-                        </div>
-                        <div class="bg-white p-6 rounded-lg shadow">
-                            <h3 class="text-gray-500 text-sm">댓글 수</h3>
-                            <p class="text-3xl font-bold">0</p>
+                <div class="flex-1 overflow-y-auto">
+                    <!-- Top Bar -->
+                    <div class="bg-white shadow-sm px-8 py-4 flex justify-between items-center">
+                        <h2 id="sectionTitle" class="text-2xl font-bold text-gray-800">대시보드</h2>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-sm text-gray-600">
+                                <i class="fas fa-user-circle mr-2"></i>
+                                <span id="adminName">관리자</span>
+                            </span>
+                            <button onclick="logout()" class="text-red-600 hover:text-red-700">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
                         </div>
                     </div>
+
+                    <!-- Dashboard Section -->
+                    <div id="dashboardSection" class="p-8">
+                        <!-- Stats Cards -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">전체 기사</p>
+                                        <p class="text-3xl font-bold text-gray-800" id="totalArticles">0</p>
+                                        <p class="text-xs text-green-600 mt-1">
+                                            <i class="fas fa-arrow-up"></i> 12% 증가
+                                        </p>
+                                    </div>
+                                    <div class="bg-blue-100 p-3 rounded-full">
+                                        <i class="fas fa-newspaper text-blue-600 text-2xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">전체 회원</p>
+                                        <p class="text-3xl font-bold text-gray-800" id="totalUsers">0</p>
+                                        <p class="text-xs text-green-600 mt-1">
+                                            <i class="fas fa-arrow-up"></i> 8% 증가
+                                        </p>
+                                    </div>
+                                    <div class="bg-green-100 p-3 rounded-full">
+                                        <i class="fas fa-users text-green-600 text-2xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">오늘 방문자</p>
+                                        <p class="text-3xl font-bold text-gray-800" id="todayVisitors">1,234</p>
+                                        <p class="text-xs text-red-600 mt-1">
+                                            <i class="fas fa-arrow-down"></i> 3% 감소
+                                        </p>
+                                    </div>
+                                    <div class="bg-yellow-100 p-3 rounded-full">
+                                        <i class="fas fa-eye text-yellow-600 text-2xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition-shadow">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <p class="text-gray-500 text-sm">전체 댓글</p>
+                                        <p class="text-3xl font-bold text-gray-800" id="totalComments">0</p>
+                                        <p class="text-xs text-green-600 mt-1">
+                                            <i class="fas fa-arrow-up"></i> 15% 증가
+                                        </p>
+                                    </div>
+                                    <div class="bg-purple-100 p-3 rounded-full">
+                                        <i class="fas fa-comments text-purple-600 text-2xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Charts -->
+                        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h3 class="text-lg font-semibold mb-4">방문자 통계</h3>
+                                <canvas id="visitorsChart"></canvas>
+                            </div>
+                            <div class="bg-white p-6 rounded-lg shadow">
+                                <h3 class="text-lg font-semibold mb-4">카테고리별 기사</h3>
+                                <canvas id="categoriesChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Recent Activities -->
+                        <div class="bg-white rounded-lg shadow">
+                            <div class="px-6 py-4 border-b">
+                                <h3 class="text-lg font-semibold">최근 활동</h3>
+                            </div>
+                            <div class="p-6">
+                                <div class="space-y-4" id="recentActivities">
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-blue-100 p-2 rounded-full">
+                                            <i class="fas fa-newspaper text-blue-600"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm">
+                                                <span class="font-semibold">홍길동</span>님이 
+                                                <span class="text-blue-600">"새 학기 시작"</span> 기사를 작성했습니다.
+                                            </p>
+                                            <p class="text-xs text-gray-500">5분 전</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-green-100 p-2 rounded-full">
+                                            <i class="fas fa-user-plus text-green-600"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm">
+                                                새로운 회원 <span class="font-semibold">김철수</span>님이 가입했습니다.
+                                            </p>
+                                            <p class="text-xs text-gray-500">12분 전</p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-3">
+                                        <div class="bg-purple-100 p-2 rounded-full">
+                                            <i class="fas fa-comment text-purple-600"></i>
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="text-sm">
+                                                <span class="font-semibold">이영희</span>님이 기사에 댓글을 달았습니다.
+                                            </p>
+                                            <p class="text-xs text-gray-500">25분 전</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Articles Section (Hidden by default) -->
+                    <div id="articlesSection" class="p-8 hidden">
+                        <div class="bg-white rounded-lg shadow">
+                            <div class="px-6 py-4 border-b flex justify-between items-center">
+                                <h3 class="text-lg font-semibold">기사 목록</h3>
+                                <button onclick="showNewArticleForm()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
+                                    <i class="fas fa-plus mr-2"></i> 새 기사 작성
+                                </button>
+                            </div>
+                            <div class="p-6">
+                                <div class="overflow-x-auto">
+                                    <table class="w-full">
+                                        <thead>
+                                            <tr class="border-b">
+                                                <th class="text-left py-2">ID</th>
+                                                <th class="text-left py-2">제목</th>
+                                                <th class="text-left py-2">카테고리</th>
+                                                <th class="text-left py-2">작성자</th>
+                                                <th class="text-left py-2">상태</th>
+                                                <th class="text-left py-2">작성일</th>
+                                                <th class="text-left py-2">관리</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="articlesTableBody">
+                                            <!-- Articles will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other sections will be added similarly -->
                 </div>
             </div>
         </div>

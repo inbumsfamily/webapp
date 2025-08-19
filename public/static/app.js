@@ -16,14 +16,14 @@ axios.interceptors.request.use(
   error => Promise.reject(error)
 );
 
-// Load articles
-async function loadArticles() {
+// Load newspaper articles
+async function loadNewspaperArticles() {
   try {
-    const response = await axios.get(`${API_BASE}/articles?limit=6`);
-    const articlesGrid = document.getElementById('articlesGrid');
+    const response = await axios.get(`${API_BASE}/articles?category=신문사&limit=6`);
+    const newspaperSection = document.getElementById('newspaperArticles');
     
     if (response.data.articles && response.data.articles.length > 0) {
-      articlesGrid.innerHTML = response.data.articles.map(article => `
+      newspaperSection.innerHTML = response.data.articles.map(article => `
         <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
           ${article.featured_image_url ? `
             <img src="${article.featured_image_url}" alt="${article.title}" class="w-full h-48 object-cover">
@@ -33,7 +33,7 @@ async function loadArticles() {
             </div>
           `}
           <div class="p-4">
-            <span class="text-xs text-blue-600 font-semibold">${article.category_name || '일반'}</span>
+            <span class="text-xs text-blue-600 font-semibold">${article.category_name || '신문사'}</span>
             <h3 class="text-lg font-bold mt-2 mb-2 line-clamp-2">${article.title}</h3>
             <div class="flex items-center text-sm text-gray-500">
               <i class="fas fa-user mr-1"></i>
@@ -49,7 +49,7 @@ async function loadArticles() {
         </article>
       `).join('');
     } else {
-      articlesGrid.innerHTML = `
+      newspaperSection.innerHTML = `
         <div class="col-span-3 text-center py-12">
           <i class="fas fa-newspaper text-gray-300 text-6xl mb-4"></i>
           <p class="text-gray-500">아직 등록된 기사가 없습니다.</p>
@@ -57,12 +57,15 @@ async function loadArticles() {
       `;
     }
   } catch (error) {
-    console.error('Failed to load articles:', error);
-    document.getElementById('articlesGrid').innerHTML = `
-      <div class="col-span-3 text-center py-12">
-        <p class="text-red-500">기사를 불러오는 중 오류가 발생했습니다.</p>
-      </div>
-    `;
+    console.error('Failed to load newspaper articles:', error);
+  }
+}
+
+// Scroll to section smoothly
+function scrollToSection(sectionId) {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
   }
 }
 
@@ -280,6 +283,7 @@ function showRegisterModal() {
 // Update authentication UI
 function updateAuthUI() {
   const loginBtn = document.getElementById('loginBtn');
+  const adminBtn = document.getElementById('adminBtn');
   
   if (currentUser) {
     loginBtn.innerHTML = `
@@ -288,9 +292,18 @@ function updateAuthUI() {
         <i class="fas fa-sign-out-alt"></i> 로그아웃
       </button>
     `;
+    
+    // Show admin button if user is admin or editor
+    if (currentUser.role_id <= 2 && adminBtn) {
+      adminBtn.classList.remove('hidden');
+      adminBtn.onclick = () => window.location.href = '/admin';
+    }
   } else {
     loginBtn.innerHTML = '<i class="fas fa-user"></i> 로그인';
     loginBtn.onclick = showLoginModal;
+    if (adminBtn) {
+      adminBtn.classList.add('hidden');
+    }
   }
 }
 
@@ -332,11 +345,39 @@ async function checkAuth() {
   }
 }
 
+// Load broadcast content
+async function loadBroadcastContent() {
+  // This would load actual broadcast videos
+  // For now, using placeholder content
+  console.log('Loading broadcast content...');
+}
+
+// Load special reports
+async function loadSpecialReports() {
+  // This would load special reports
+  console.log('Loading special reports...');
+}
+
+// Load shorts
+async function loadShorts() {
+  // This would load shorts videos
+  console.log('Loading shorts...');
+}
+
+// Load campus life
+async function loadCampusLife() {
+  // This would load campus life content
+  console.log('Loading campus life...');
+}
+
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
-  loadArticles();
-  loadCalendarEvents();
+  loadNewspaperArticles();
+  loadBroadcastContent();
+  loadSpecialReports();
+  loadShorts();
+  loadCampusLife();
   
   // Set up login button
   const loginBtn = document.getElementById('loginBtn');
