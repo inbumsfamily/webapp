@@ -53,7 +53,7 @@ app.get('/', (c) => {
         <div id="app">
             <!-- Header -->
             <header class="bg-white shadow-sm border-b sticky top-0 z-50">
-                <div class="container mx-auto px-4">
+                <div class="max-w-7xl mx-auto px-4">
                     <div class="flex justify-between items-center h-20">
                         <div class="flex items-center">
                             <a href="/" class="text-2xl font-bold text-blue-900">
@@ -63,12 +63,12 @@ app.get('/', (c) => {
                         </div>
                         
                         <!-- Main Navigation with Dropdown -->
-                        <nav class="hidden lg:flex items-center space-x-1">
-                            <a href="/" class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium">홈</a>
+                        <nav class="hidden lg:flex items-center flex-wrap">
+                            <a href="/" class="px-2 py-2 text-gray-700 hover:text-blue-600 font-semibold text-sm">홈</a>
                             
                             <!-- 방송국 드롭다운 -->
                             <div class="relative group">
-                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                <button class="px-2 py-2 text-gray-700 hover:text-blue-600 font-semibold flex items-center text-sm">
                                     방송국
                                     <i class="fas fa-chevron-down ml-1 text-xs"></i>
                                 </button>
@@ -86,7 +86,7 @@ app.get('/', (c) => {
                             
                             <!-- 신문사 드롭다운 -->
                             <div class="relative group">
-                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                <button class="px-2 py-2 text-gray-700 hover:text-blue-600 font-semibold flex items-center text-sm">
                                     신문사
                                     <i class="fas fa-chevron-down ml-1 text-xs"></i>
                                 </button>
@@ -100,7 +100,7 @@ app.get('/', (c) => {
                             
                             <!-- 캠퍼스 드롭다운 -->
                             <div class="relative group">
-                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                <button class="px-2 py-2 text-gray-700 hover:text-blue-600 font-semibold flex items-center text-sm">
                                     캠퍼스
                                     <i class="fas fa-chevron-down ml-1 text-xs"></i>
                                 </button>
@@ -118,7 +118,7 @@ app.get('/', (c) => {
                             
                             <!-- 쇼츠 드롭다운 -->
                             <div class="relative group">
-                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                <button class="px-2 py-2 text-gray-700 hover:text-blue-600 font-semibold flex items-center text-sm">
                                     쇼츠
                                     <i class="fas fa-chevron-down ml-1 text-xs"></i>
                                 </button>
@@ -132,7 +132,7 @@ app.get('/', (c) => {
                             
                             <!-- 기획보도 드롭다운 -->
                             <div class="relative group">
-                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                <button class="px-2 py-2 text-gray-700 hover:text-blue-600 font-semibold flex items-center text-sm">
                                     기획보도
                                     <i class="fas fa-chevron-down ml-1 text-xs"></i>
                                 </button>
@@ -146,7 +146,7 @@ app.get('/', (c) => {
                             
                             <!-- 제주소식 드롭다운 -->
                             <div class="relative group">
-                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                <button class="px-2 py-2 text-gray-700 hover:text-blue-600 font-semibold flex items-center text-sm">
                                     제주소식
                                     <i class="fas fa-chevron-down ml-1 text-xs"></i>
                                 </button>
@@ -161,7 +161,7 @@ app.get('/', (c) => {
                             
                             <!-- 오피니언 드롭다운 -->
                             <div class="relative group">
-                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                <button class="px-2 py-2 text-gray-700 hover:text-blue-600 font-semibold flex items-center text-sm">
                                     오피니언
                                     <i class="fas fa-chevron-down ml-1 text-xs"></i>
                                 </button>
@@ -176,7 +176,7 @@ app.get('/', (c) => {
                             
                             <!-- 에세이 드롭다운 -->
                             <div class="relative group">
-                                <button class="px-4 py-2 text-gray-700 hover:text-blue-600 font-medium flex items-center">
+                                <button class="px-2 py-2 text-gray-700 hover:text-blue-600 font-semibold flex items-center text-sm">
                                     에세이
                                     <i class="fas fa-chevron-down ml-1 text-xs"></i>
                                 </button>
