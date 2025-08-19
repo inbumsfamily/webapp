@@ -72,8 +72,8 @@
 
 ## URLs
 - **개발 서버**: https://3000-ie5ntpnfzx6f6arr0j54v-6532622b.e2b.dev
-- **프로덕션**: (배포 후 업데이트 예정)
-- **GitHub**: (리포지토리 생성 후 업데이트 예정)
+- **프로덕션**: https://963ecb7f.jeju-halla-media.pages.dev
+- **GitHub**: https://github.com/inbumsfamily/webapp (비공개 저장소)
 
 ## 데이터 아키텍처
 - **데이터베이스**: Cloudflare D1 (SQLite 기반)
@@ -142,17 +142,32 @@ npm run dev
 
 ### 프로덕션 배포
 ```bash
+# Cloudflare API 설정
+setup_cloudflare_api_key
+
 # 빌드
 npm run build
 
-# Cloudflare Pages 배포
-npm run deploy
+# Cloudflare Pages 배포 (Wrangler CLI)
+npx wrangler pages deploy dist --project-name jeju-halla-media
 ```
+
+### ⚠️ 중요: D1 데이터베이스 바인딩 설정
+Cloudflare Dashboard에서 수동으로 D1 바인딩을 추가해야 합니다:
+1. Cloudflare Dashboard → Pages → jeju-halla-media → Settings
+2. Functions → D1 database bindings
+3. Add binding:
+   - Variable name: `DB`
+   - D1 database: `jeju-halla-media-production`
+4. Save
 
 ## 배포 상태
 - **플랫폼**: Cloudflare Pages
-- **상태**: ✅ 개발 중
+- **상태**: ✅ 프로덕션 배포 완료
+- **프로젝트명**: jeju-halla-media
+- **D1 데이터베이스**: jeju-halla-media-production (설정 완료)
 - **최종 업데이트**: 2025-08-19
+- **배포 방법**: Wrangler CLI 직접 배포 (GitHub 저장소 비공개 유지)
 
 ## 라이선스
 © 2025 제주한라대학교 신문방송사. All rights reserved.
