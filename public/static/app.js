@@ -16,15 +16,63 @@ axios.interceptors.request.use(
   error => Promise.reject(error)
 );
 
+// Load latest articles for main page
+async function loadLatestArticles() {
+  try {
+    const response = await axios.get(`${API_BASE}/articles?limit=12`);
+    const articlesSection = document.getElementById('latestArticles');
+    if (!articlesSection) return;
+    
+    if (response.data.articles && response.data.articles.length > 0) {
+      articlesSection.innerHTML = response.data.articles.map(article => `
+        <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location.href='/article/${article.slug}'">
+          ${article.featured_image_url ? `
+            <img src="${article.featured_image_url}" alt="${article.title}" class="w-full h-48 object-cover">
+          ` : `
+            <div class="w-full h-48 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+              <i class="fas fa-newspaper text-white text-4xl"></i>
+            </div>
+          `}
+          <div class="p-4">
+            <span class="text-xs text-blue-600 font-semibold">${article.category_name || '일반'}</span>
+            <h3 class="text-lg font-bold mt-2 mb-2 line-clamp-2 text-gray-800 hover:text-blue-600">
+              ${article.title}
+            </h3>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fas fa-user mr-1"></i>
+              <span class="mr-3">${article.author_name}</span>
+              <i class="fas fa-eye mr-1"></i>
+              <span>${article.view_count}</span>
+            </div>
+            <p class="text-gray-600 mt-2 line-clamp-3">${stripHtml(article.content)}</p>
+            <button class="text-blue-600 hover:text-blue-800 mt-3 inline-block font-semibold" onclick="event.stopPropagation(); window.location.href='/article/${article.slug}'">
+              자세히 보기 →
+            </button>
+          </div>
+        </article>
+      `).join('');
+    } else {
+      articlesSection.innerHTML = `
+        <div class="col-span-3 text-center py-12">
+          <i class="fas fa-newspaper text-gray-300 text-6xl mb-4"></i>
+          <p class="text-gray-500">아직 등록된 기사가 없습니다.</p>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Failed to load latest articles:', error);
+  }
+}
+
 // Load newspaper articles
 async function loadNewspaperArticles() {
   try {
-    const response = await axios.get(`${API_BASE}/articles?category=신문사&limit=6`);
+    const response = await axios.get(`${API_BASE}/articles?category=newspaper&limit=6`);
     const newspaperSection = document.getElementById('newspaperArticles');
     
     if (response.data.articles && response.data.articles.length > 0) {
       newspaperSection.innerHTML = response.data.articles.map(article => `
-        <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+        <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location.href='/article/${article.slug}'">
           ${article.featured_image_url ? `
             <img src="${article.featured_image_url}" alt="${article.title}" class="w-full h-48 object-cover">
           ` : `
@@ -34,7 +82,9 @@ async function loadNewspaperArticles() {
           `}
           <div class="p-4">
             <span class="text-xs text-blue-600 font-semibold">${article.category_name || '신문사'}</span>
-            <h3 class="text-lg font-bold mt-2 mb-2 line-clamp-2">${article.title}</h3>
+            <h3 class="text-lg font-bold mt-2 mb-2 line-clamp-2 text-gray-800 hover:text-blue-600">
+              ${article.title}
+            </h3>
             <div class="flex items-center text-sm text-gray-500">
               <i class="fas fa-user mr-1"></i>
               <span class="mr-3">${article.author_name}</span>
@@ -42,9 +92,9 @@ async function loadNewspaperArticles() {
               <span>${article.view_count}</span>
             </div>
             <p class="text-gray-600 mt-2 line-clamp-3">${stripHtml(article.content)}</p>
-            <a href="/article/${article.slug}" class="text-blue-600 hover:text-blue-800 mt-3 inline-block font-semibold">
+            <button class="text-blue-600 hover:text-blue-800 mt-3 inline-block font-semibold" onclick="event.stopPropagation(); window.location.href='/article/${article.slug}'">
               자세히 보기 →
-            </a>
+            </button>
           </div>
         </article>
       `).join('');
@@ -347,9 +397,72 @@ async function checkAuth() {
 
 // Load broadcast content
 async function loadBroadcastContent() {
-  // This would load actual broadcast videos
-  // For now, using placeholder content
-  console.log('Loading broadcast content...');
+  try {
+    const response = await axios.get(`${API_BASE}/articles?category=broadcast&limit=6`);
+    const broadcastSection = document.getElementById('broadcastArticles');
+    if (!broadcastSection) return;
+    
+    if (response.data.articles && response.data.articles.length > 0) {
+      broadcastSection.innerHTML = response.data.articles.map(article => `
+        <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onclick="window.location.href='/article/${article.slug}'">
+          ${article.youtube_embed_id ? `
+            <div class="aspect-video bg-black relative" onclick="event.stopPropagation()">
+              <iframe 
+                width="100%" 
+                height="100%" 
+                src="https://www.youtube.com/embed/${article.youtube_embed_id}" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen
+              ></iframe>
+            </div>
+          ` : article.featured_image_url ? `
+            <img src="${article.featured_image_url}" alt="${article.title}" class="w-full h-48 object-cover">
+          ` : `
+            <div class="aspect-video bg-gray-300 relative">
+              <div class="absolute inset-0 flex items-center justify-center">
+                <i class="fas fa-play-circle text-white text-4xl"></i>
+              </div>
+            </div>
+          `}
+          <div class="p-4">
+            <span class="text-xs text-red-600 font-semibold">${article.category_name || '방송국'}</span>
+            <h3 class="text-lg font-bold mt-2 mb-2 line-clamp-2 text-gray-800 hover:text-blue-600">
+              ${article.title}
+            </h3>
+            <div class="flex items-center text-sm text-gray-500">
+              <i class="fas fa-user mr-1"></i>
+              <span class="mr-3">${article.author_name}</span>
+              <i class="fas fa-eye mr-1"></i>
+              <span>${article.view_count}</span>
+            </div>
+            <p class="text-gray-600 mt-2 line-clamp-3">${stripHtml(article.content)}</p>
+            <button class="text-blue-600 hover:text-blue-800 mt-3 inline-block font-semibold" onclick="event.stopPropagation(); window.location.href='/article/${article.slug}'">
+              자세히 보기 →
+            </button>
+          </div>
+        </article>
+      `).join('');
+    } else {
+      broadcastSection.innerHTML = `
+        <div class="col-span-3 text-center py-12">
+          <i class="fas fa-video text-gray-300 text-6xl mb-4"></i>
+          <p class="text-gray-500">아직 등록된 방송 콘텐츠가 없습니다.</p>
+        </div>
+      `;
+    }
+  } catch (error) {
+    console.error('Failed to load broadcast content:', error);
+    const broadcastSection = document.getElementById('broadcastArticles');
+    if (broadcastSection) {
+      broadcastSection.innerHTML = `
+        <div class="col-span-3 text-center py-12">
+          <i class="fas fa-exclamation-circle text-red-300 text-6xl mb-4"></i>
+          <p class="text-gray-500">방송 콘텐츠를 불러오는 중 오류가 발생했습니다.</p>
+        </div>
+      `;
+    }
+  }
 }
 
 // Load special reports
@@ -373,6 +486,7 @@ async function loadCampusLife() {
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
   checkAuth();
+  loadLatestArticles();
   loadNewspaperArticles();
   loadBroadcastContent();
   loadSpecialReports();

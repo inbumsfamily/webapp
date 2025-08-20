@@ -52,7 +52,18 @@ articlesRouter.get('/', async (c) => {
     }
     
     if (category) {
-      query += ' AND c.slug = ?';
+      // Check if it's a parent category
+      const parentCategories = ['broadcast', 'newspaper', 'campus', 'shorts', 'special-report', 'jeju-news', 'opinion', 'essay'];
+      
+      if (parentCategories.includes(category)) {
+        // Get all subcategories for this parent category
+        query += ` AND c.category_id IN (
+          SELECT category_id FROM categories 
+          WHERE parent_category_id = (SELECT category_id FROM categories WHERE slug = ?)
+        )`;
+      } else {
+        query += ' AND c.slug = ?';
+      }
       params.push(category);
     }
     

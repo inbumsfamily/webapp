@@ -9,7 +9,7 @@
   - 기사 관리 시스템 (CRUD)
   - 댓글 시스템
   - 학사일정 관리
-  - 관리자 대시보드
+  - 44개 카테고리별 기사 페이지
 
 ## 현재 구현된 기능
 ✅ 프로젝트 초기 설정 (Hono + Cloudflare Pages)
@@ -17,13 +17,32 @@
 ✅ 사용자 인증 시스템 (JWT 기반)
 ✅ RBAC 시스템 구현
 ✅ 기사 관리 API (CRUD)
-✅ 카테고리 관리 API
+✅ 카테고리 관리 API (9개 메인, 44개 서브)
 ✅ 댓글 시스템 API
 ✅ 학사일정 API
 ✅ 기본 프론트엔드 UI
 ✅ 로그인/회원가입 모달
+✅ 카테고리별 기사 페이지
+✅ 기사 상세보기 페이지
+✅ 샘플 기사 264개 (44개 카테고리 × 6개씩)
+✅ 드롭다운 네비게이션 메뉴
 
-## 기능별 엔드포인트
+## 페이지 라우트
+| 경로 | 설명 |
+|------|------|
+| `/` | 메인 페이지 |
+| `/broadcast` | 방송국 메인 |
+| `/newspaper` | 신문사 메인 |
+| `/campus` | 캠퍼스 메인 |
+| `/shorts` | 쇼츠 메인 |
+| `/special-report` | 기획보도 메인 |
+| `/jeju-news` | 제주소식 메인 |
+| `/opinion` | 오피니언 메인 |
+| `/essay` | 에세이 메인 |
+| `/{category-slug}` | 각 서브카테고리 페이지 (44개) |
+| `/article/{slug}` | 기사 상세 페이지 |
+
+## API 엔드포인트
 
 ### 인증 API
 - `POST /api/auth/register` - 회원가입
@@ -62,6 +81,8 @@
 - [ ] 통계 및 분석 대시보드
 - [ ] 이메일 알림 시스템
 - [ ] 소셜 미디어 공유 기능
+- [ ] 태그 시스템
+- [ ] 구독/알림 기능
 
 ## 개발 권장사항
 1. **관리자 대시보드 완성**: 현재 기본 틀만 구현되어 있으므로 전체 기능 구현 필요
@@ -80,8 +101,8 @@
 - **주요 테이블**: 
   - users (사용자)
   - roles (역할)
-  - articles (기사)
-  - categories (카테고리)
+  - articles (기사 - 264개 샘플 데이터 포함)
+  - categories (카테고리 - 9개 메인, 44개 서브)
   - comments (댓글)
   - academic_calendar_events (학사일정)
   - site_settings (사이트 설정)
@@ -101,9 +122,9 @@
 
 ### 기본 사용법
 1. 홈페이지 접속
-2. 우측 상단 로그인 버튼 클릭
-3. 테스트 계정으로 로그인
-4. 역할에 따른 기능 사용
+2. 상단 메뉴에서 원하는 카테고리 선택 (드롭다운 메뉴 지원)
+3. 기사 클릭하여 상세 내용 확인
+4. 로그인 후 권한에 따른 기능 사용
 
 ## 기술 스택
 - **프레임워크**: Hono + TypeScript
@@ -120,6 +141,7 @@
 - Node.js 18+
 - npm 또는 yarn
 - Wrangler CLI
+- PM2 (프로세스 관리)
 
 ### 설치 및 실행
 ```bash
@@ -131,6 +153,12 @@ npm run db:migrate:local
 
 # 시드 데이터 추가
 npm run db:seed
+
+# 샘플 기사 데이터 추가
+npx wrangler d1 execute jeju-halla-media-production --local --file=./seed-articles-part1.sql
+npx wrangler d1 execute jeju-halla-media-production --local --file=./seed-articles-part2.sql
+npx wrangler d1 execute jeju-halla-media-production --local --file=./seed-articles-part3.sql
+npx wrangler d1 execute jeju-halla-media-production --local --file=./seed-articles-part4.sql
 
 # 개발 서버 실행
 npm run build
@@ -166,8 +194,15 @@ Cloudflare Dashboard에서 수동으로 D1 바인딩을 추가해야 합니다:
 - **상태**: ✅ 프로덕션 배포 완료
 - **프로젝트명**: jeju-halla-media
 - **D1 데이터베이스**: jeju-halla-media-production (설정 완료)
-- **최종 업데이트**: 2025-08-19
+- **최종 업데이트**: 2025-08-20
 - **배포 방법**: Wrangler CLI 직접 배포 (GitHub 저장소 비공개 유지)
+
+## 주요 업데이트 내역
+- 2025-08-20: 44개 카테고리별 6개씩 총 264개 샘플 기사 추가
+- 2025-08-20: 기사 상세 페이지 구현
+- 2025-08-20: 카테고리별 기사 목록 페이지 구현
+- 2025-08-20: 부모/자식 카테고리 쿼리 처리 개선
+- 2025-08-19: 초기 프로젝트 구축 및 배포
 
 ## 라이선스
 © 2025 제주한라대학교 신문방송사. All rights reserved.
